@@ -166,6 +166,11 @@ const faqItems = [
     question: "Arkadaşımı davet edebilir miyim?",
     answer: "Evet, uygulama içi davet sistemi ile arkadaşlarını çağırabilirsin.",
   },
+  {
+    question: "Spor verilerim ve ilerlemem nasıl takip ediliyor?",
+    answer:
+      "Etkinliklere ve challenge'lara katıldıkça profilinde ilerleme grafikleri ve istatistikler oluşur. Böylece ne kadar yol aldığını net bir şekilde görebilirsin.",
+  },
 ];
 
 function getInitials(name) {
@@ -201,7 +206,7 @@ function App() {
       <header className="top-nav">
         <div className="container nav-inner">
           <a href="#hero" className="logo">
-            <img src="/logo.png" alt="FitBul Logo" className="logo-image" />
+            <img src="/images/logo.png" alt="FitBul Logo" className="logo-image" />
             <span className="logo-text">{APP_NAME}</span>
           </a>
           <nav className="nav-links">
@@ -220,8 +225,21 @@ function App() {
       <main>
         {/* HERO */}
         <section id="hero" className="hero">
+          <div className="hero-video-wrapper">
+            <video 
+              autoPlay 
+              loop 
+              muted 
+              playsInline 
+              className="hero-video"
+            >
+              <source src="/video/background_video.mp4" type="video/mp4" />
+            </video>
+            <div className="hero-video-overlay"></div>
+          </div>
+          
           <div className="container hero-grid">
-            <div className="hero-left">
+            <div className="hero-content">
               <div className="hero-badge">
                 <span className="hero-dot" />
                 Spor partneri bulmanın en sosyal yolu
@@ -255,54 +273,6 @@ function App() {
                 <span>📍 Şehrine ve semtine göre filtrele</span>
               </div>
             </div>
-
-            <div className="hero-right">
-              <div className="phone-mockup">
-                <div className="phone-screen">
-                  <div className="phone-header">
-                    <span className="small-pill">Bugün yakındakiler</span>
-                    <span className="status-dot" />
-                  </div>
-                  <div className="match-list">
-                    <div className="match-card">
-                      <div className="avatar-circle">EZ</div>
-                      <div>
-                        <div className="match-name">Ege Z.</div>
-                        <div className="match-meta">
-                          5K koşu · Moda Sahil · 19:30
-                        </div>
-                      </div>
-                      <span className="match-tag">%87 eşleşme</span>
-                    </div>
-                    <div className="match-card">
-                      <div className="avatar-circle">DY</div>
-                      <div>
-                        <div className="match-name">Duygu Y.</div>
-                        <div className="match-meta">
-                          Pilates · Online · 20:00
-                        </div>
-                      </div>
-                      <span className="match-tag">Yeni</span>
-                    </div>
-                    <div className="match-card">
-                      <div className="avatar-circle">BK</div>
-                      <div>
-                        <div className="match-name">Berk K.</div>
-                        <div className="match-meta">
-                          Fitness · Beşiktaş · 18:00
-                        </div>
-                      </div>
-                      <span className="match-tag">Sık eşleşme</span>
-                    </div>
-                  </div>
-                  <div className="phone-footer">
-                    <button className="btn primary small">
-                      Eşleşmeleri Gör
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </section>
 
@@ -317,21 +287,20 @@ function App() {
               </p>
             </div>
 
-            <div className="how-grid">
+            <div className="how-card-grid">
               {howSteps.map((step, index) => (
-                <div 
-                  key={step.title} 
+                <div
+                  key={step.title}
                   className="how-card"
-                  style={{
-                    animationDelay: `${index * 0.1}s`
-                  }}
+                  style={{ animationDelay: `${index * 0.1}s` }}
                 >
-                  <div className="how-number">{index + 1}</div>
+                  <div className="how-card-number">{index + 1}</div>
                   <h3>{step.title}</h3>
                   <p>{step.text}</p>
                 </div>
               ))}
             </div>
+
           </div>
         </section>
 
@@ -340,13 +309,13 @@ function App() {
           <div className="container">
             <div className="about-grid">
               <div className="about-image-wrapper">
-                <img 
-                  src="/images/about.jpg" 
-                  alt="FitBul Hakkında" 
+                <img
+                  src="/images/images3.jpg"
+                  alt="FitBul Hakkında"
                   className="about-image"
                 />
               </div>
-              <div className="about-content">
+              <div className="about-content">     
                 <h2>Hakkımızda</h2>
                 <p>
                   FitBul, sporla sosyalleşmenin gücüne inanan bir ekip tarafından 
@@ -378,72 +347,36 @@ function App() {
         </section>
 
         {/* FEATURES - SCROLLABLE WITH IMAGES */}
-        <section id="features" className="section">
+        <section id="features" className="section features-with-bg">
+          <div className="features-bg-wrapper">
+            <img src="/images/images2.png" alt="" className="features-bg-image" />
+            <div className="features-bg-overlay"></div>
+          </div>
+
           <div className="container">
             <div className="section-header center">
-              <h2>Özellikler</h2>
+              <h2>Hizmetlerimiz</h2>
               <p>
                 FitBul ile sporunu sosyal hale getir, hedeflerini takip et ve
                 motivasyonunu sürekli canlı tut.
               </p>
             </div>
 
-            <div className="features-carousel-wrapper">
-              <button
-                className="carousel-arrow left"
-                onClick={() => handleFeatureScroll("prev")}
-                aria-label="Önceki özellik"
-              >
-                ←
-              </button>
-
-              <div className="features-carousel">
-                <div
-                  className="features-track"
+            <div className="features-list-clean">
+              {mainFeatures.map((feature, index) => (
+                <div 
+                  key={feature.number} 
+                  className="feature-item-clean"
                   style={{
-                    transform: `translateX(-${currentFeature * 100}%)`,
+                    animationDelay: `${index * 0.1}s`
                   }}
                 >
-                  {mainFeatures.map((feature, index) => (
-                    <div key={feature.number} className="feature-slide">
-                      <div className="feature-content">
-                        <div className="feature-image-wrapper">
-                          <img
-                            src={feature.image}
-                            alt={feature.title}
-                            className="feature-image"
-                          />
-                        </div>
-                        <div className="feature-text">
-                          <div className="feature-number-badge">
-                            {feature.number}
-                          </div>
-                          <h3>{feature.title}</h3>
-                          <p>{feature.description}</p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
+                  <div className="feature-clean-number">{feature.number}</div>
+                  <div className="feature-clean-content">
+                    <h3>{feature.title}</h3>
+                    <p>{feature.description}</p>
+                  </div>
                 </div>
-              </div>
-
-              <button
-                className="carousel-arrow right"
-                onClick={() => handleFeatureScroll("next")}
-                aria-label="Sonraki özellik"
-              >
-                →
-              </button>
-            </div>
-
-            <div className="carousel-indicators">
-              {mainFeatures.map((_, index) => (
-                <button
-                  key={index}
-                  className={`indicator ${index === currentFeature ? "active" : ""}`}
-                  onClick={() => setCurrentFeature(index)}
-                  aria-label={`Özellik ${index + 1}`}
-                />
               ))}
             </div>
           </div>
@@ -460,19 +393,23 @@ function App() {
               </p>
             </div>
 
-            <div className="why-main-grid">
-              <div className="why-image-section">
-                <img 
-                  src="/images/images.png" 
-                  alt="Neden FitBul" 
-                  className="why-main-image"
+            <div className="why-new-grid">
+              <div className="why-illustration">
+                <img
+                  src="/images/images.png"
+                  alt="Neden FitBul?"
+                  className="why-illustration-img"
                 />
               </div>
-              
-              <div className="why-cards-grid">
-                {whyCards.map((item) => (
-                  <div key={item.title} className="why-card">
-                    <div className="why-emoji">{item.icon}</div>
+
+              <div className="why-card-grid">
+                {whyCards.map((item, index) => (
+                  <div
+                    key={item.title}
+                    className="why-card"
+                    style={{ animationDelay: `${index * 0.1}s` }}
+                  >
+                    <div className="why-card-icon">{item.icon}</div>
                     <h3>{item.title}</h3>
                     <p>{item.text}</p>
                   </div>
@@ -483,42 +420,42 @@ function App() {
         </section>
 
         {/* TESTIMONIALS - DOUBLE ROW SCROLLING */}
-        <section className="section" id="testimonials">
-          <div className="container">
+        <section className="section testimonials-section" id="testimonials">
+          <div className="container testimonials-container">
             <div className="section-header center">
               <h2>Kullanıcılarımız ne diyor?</h2>
             </div>
+          </div>
 
-            <div className="testimonials-carousel">
-              <div className="testimonials-row scroll-right">
-                {[...testimonials, ...testimonials].map((t, index) => (
-                  <div key={`top-${index}`} className="testimonial-card-scroll">
-                    <div className="testimonial-header">
-                      <div className="avatar">{getInitials(t.name)}</div>
-                      <div>
-                        <div className="testimonial-name">{t.name}</div>
-                        <div className="testimonial-role">{t.role}</div>
-                      </div>
+          <div className="testimonials-carousel">
+            <div className="testimonials-row scroll-right">
+              {[...testimonials, ...testimonials].map((t, index) => (
+                <div key={`top-${index}`} className="testimonial-card-scroll">
+                  <div className="testimonial-header">
+                    <div className="avatar">{getInitials(t.name)}</div>
+                    <div>
+                      <div className="testimonial-name">{t.name}</div>
+                      <div className="testimonial-role">{t.role}</div>
                     </div>
-                    <p>"{t.text}"</p>
                   </div>
-                ))}
-              </div>
+                  <p>"{t.text}"</p>
+                </div>
+              ))}
+            </div>
 
-              <div className="testimonials-row scroll-left">
-                {[...testimonials, ...testimonials].map((t, index) => (
-                  <div key={`bottom-${index}`} className="testimonial-card-scroll">
-                    <div className="testimonial-header">
-                      <div className="avatar">{getInitials(t.name)}</div>
-                      <div>
-                        <div className="testimonial-name">{t.name}</div>
-                        <div className="testimonial-role">{t.role}</div>
-                      </div>
+            <div className="testimonials-row scroll-left">
+              {[...testimonials, ...testimonials].map((t, index) => (
+                <div key={`bottom-${index}`} className="testimonial-card-scroll">
+                  <div className="testimonial-header">
+                    <div className="avatar">{getInitials(t.name)}</div>
+                    <div>
+                      <div className="testimonial-name">{t.name}</div>
+                      <div className="testimonial-role">{t.role}</div>
                     </div>
-                    <p>"{t.text}"</p>
                   </div>
-                ))}
-              </div>
+                  <p>"{t.text}"</p>
+                </div>
+              ))}
             </div>
           </div>
         </section>
@@ -531,49 +468,97 @@ function App() {
               <p>Merak ettiklerinin cevaplarını burada bulabilirsin</p>
             </div>
 
-            <div className="faq-list-enhanced">
-              {faqItems.map((item, idx) => {
-                const isOpen = activeFaq === idx;
-                return (
-                  <div
-                    key={item.question}
-                    className={`faq-item-enhanced ${isOpen ? "open" : ""}`}
-                  >
-                    <button
-                      className="faq-header-enhanced"
-                      onClick={() =>
-                        setActiveFaq(isOpen ? null : idx)
-                      }
+            <div className="faq-two-column">
+              <div className="faq-column">
+                {faqItems.slice(0, 5).map((item, idx) => {
+                  const isOpen = activeFaq === idx;
+                  return (
+                    <div
+                      key={item.question}
+                      className={`faq-item-enhanced ${isOpen ? "open" : ""}`}
                     >
-                      <span className="faq-question">{item.question}</span>
-                      <span className="faq-icon">
-                        <svg
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          {isOpen ? (
-                            <line x1="5" y1="12" x2="19" y2="12" />
-                          ) : (
-                            <>
-                              <line x1="12" y1="5" x2="12" y2="19" />
+                      <button
+                        className="faq-header-enhanced"
+                        onClick={() =>
+                          setActiveFaq(isOpen ? null : idx)
+                        }
+                      >
+                        <span className="faq-question">{item.question}</span>
+                        <span className="faq-icon">
+                          <svg
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            {isOpen ? (
                               <line x1="5" y1="12" x2="19" y2="12" />
-                            </>
-                          )}
-                        </svg>
-                      </span>
-                    </button>
-                    <div className={`faq-body-enhanced ${isOpen ? "open" : ""}`}>
-                      <p>{item.answer}</p>
+                            ) : (
+                              <>
+                                <line x1="12" y1="5" x2="12" y2="19" />
+                                <line x1="5" y1="12" x2="19" y2="12" />
+                              </>
+                            )}
+                          </svg>
+                        </span>
+                      </button>
+                      <div className={`faq-body-enhanced ${isOpen ? "open" : ""}`}>
+                        <p>{item.answer}</p>
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
+
+              <div className="faq-column">
+                {faqItems.slice(5).map((item, idx) => {
+                  const actualIdx = idx + 5;
+                  const isOpen = activeFaq === actualIdx;
+                  return (
+                    <div
+                      key={item.question}
+                      className={`faq-item-enhanced ${isOpen ? "open" : ""}`}
+                    >
+                      <button
+                        className="faq-header-enhanced"
+                        onClick={() =>
+                          setActiveFaq(isOpen ? null : actualIdx)
+                        }
+                      >
+                        <span className="faq-question">{item.question}</span>
+                        <span className="faq-icon">
+                          <svg
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            {isOpen ? (
+                              <line x1="5" y1="12" x2="19" y2="12" />
+                            ) : (
+                              <>
+                                <line x1="12" y1="5" x2="12" y2="19" />
+                                <line x1="5" y1="12" x2="19" y2="12" />
+                              </>
+                            )}
+                          </svg>
+                        </span>
+                      </button>
+                      <div className={`faq-body-enhanced ${isOpen ? "open" : ""}`}>
+                        <p>{item.answer}</p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </section>
@@ -628,7 +613,7 @@ function App() {
         <div className="container footer-inner">
           <div className="footer-left">
             <a href="#hero" className="logo">
-              <img src="/logo.png" alt="FitBul Logo" className="logo-image" />
+              <img src="public/images/logo.png" alt="FitBul Logo" className="logo-image" />
               <span className="logo-text">{APP_NAME}</span>
             </a>
             <p className="footer-text">
