@@ -1,108 +1,91 @@
 // src/App.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const APP_NAME = "FitBul";
 
 const navItems = [
-  { label: "Ana Sayfa", href: "#hero" },
-  { label: "Nasıl Çalışır", href: "#how" },
-  { label: "Branşlar", href: "#branches" },
-  { label: "Neden Biz", href: "#why" },
-  { label: "Özellikler", href: "#extras" },
-  { label: "SSS", href: "#faq" },
+  { label: "Hakkımızda", href: "#about" },
+  { label: "Hizmetlerimiz", href: "#features" },
+  { label: "Neden FitBul", href: "#why" },
 ];
 
-const features = [
+const mainFeatures = [
   {
-    title: "Sana Uygun Partner",
+    number: "1",
+    title: "Anında Spor Arkadaşı Bul",
     description:
-      "Spor seviyen, hedeflerin ve bulunduğun semte göre filtrelenmiş, sana en yakın spor partnerlerini bul.",
+      "FitBul app ile bulunduğun konuma göre aynı anda spor yapmak isteyen kişileri bul. Tek dokunuşla eşleşebilir, mesajlaşıp buluşabilir ve sporunu sosyal hale getirebilirsin. Artık \"spor yapacak kimse yok\" bahanesi yok.",
+    image: "/images/feature1.jpg",
   },
   {
-    title: "Esnek Zamanlama",
+    number: "2",
+    title: "Etkinlik Oluştur & Katıl",
     description:
-      "Sabah koşusu, akşam pilatesi ya da hafta sonu trekking… Takvimine göre eşleş ve planı birlikte şekillendir.",
+      "Koşu grubu, sabah yürüyüşü, yoga etkinliği, açık hava fitness… Topluluk etkinliklerine katıl veya kendi spor etkinliğini oluştur. Şehrin spor etkinlik merkezi artık FitBul'da.",
+    image: "/images/feature2.jpg",
   },
   {
-    title: "Güvenli Eşleşme",
+    number: "3",
+    title: "Challenge Oluştur & Katıl",
     description:
-      "Doğrulanmış profiller, rozet sistemi ve karşılıklı onaylı mesajlaşma ile güvenli bir topluluk.",
+      "Hedef koy, challenge başlat veya başkalarının meydan okumalarına katıl. İster \"7 gün üst üste koşu\", ister \"Ayda 100.000 adım\". FitBul, hedeflerini takip eden bir ilerleme sistemi sunar ve motivasyonunu sürekli canlı tutar.",
+    image: "/images/feature3.jpg",
+  },
+  {
+    number: "4",
+    title: "Güçlü Topluluk",
+    description:
+      "Spor Yaparken Özendiren, Harekete Geçiren Bir Topluluk. Aynı hedeflere sahip yüzlerce kişiyle tanış. Motivasyonunu paylaş, arkadaş edin, sporun sosyal yanını keşfet.",
+    image: "/images/feature4.jpg",
+  },
+  {
+    number: "5",
+    title: "İlerleme Takibi",
+    description:
+      "Spor Yolculuğunu Takip Et. Tamamladığın etkinliklere, katıldığın challenge'lara ve düzenli spor alışkanlığına dair tüm veriler tek ekranda. Spor performansını şeffaf ve eğlenceli bir şekilde takip et.",
+    image: "/images/feature5.jpg",
   },
 ];
 
 const howSteps = [
   {
+    title: "Uygulamayı indir",
+    text: "FitBul'u App Store veya Google Play'den ücretsiz indir.",
+  },
+  {
     title: "Profilini oluştur",
-    text: "Seviyeni, ilgilendiğin spor branşlarını, konumunu ve hedefini birkaç dokunuşla ekle.",
+    text: "Seviyeni, ilgilendiğin spor branşlarını ve hedeflerini ekle.",
   },
   {
-    title: "Partner tercihlerini seç",
-    text: "Gün ve saat, branş, partner tipi ve mesafe aralığını belirle; sistem sana en uygun adayları listelesin.",
+    title: "Konumuna göre arkadaş bul",
+    text: "Anlık spor arkadaşlarını gör, eşleş ve mesajlaş.",
   },
   {
-    title: "Eşleş, sohbet et, plan yap",
-    text: "Karşılıklı eşleştiğin kişilerle sohbetten detayları netleştir, buluşma noktasını ve zamanını ayarla.",
-  },
-  {
-    title: "Beraber hareket et",
-    text: "Antrenmanı kaydet, istatistiklerini takip et ve yeni hedefler için birbirinizi motive edin.",
-  },
-];
-
-const branchCards = [
-  {
-    title: "Koşu & Yürüyüş",
-    text: "Sahil, orman yolu veya koşu bandı… Hangi tempoda olursan ol ritmini paylaş.",
-    image: "/images/branch-run.jpg",
-  },
-  {
-    title: "Basketbol",
-    text: "3x3, 5x5 ya da serbest atış… Potanın etrafında yeni takım arkadaşları bul.",
-    image: "/images/branch-basket.jpg",
-  },
-  {
-    title: "Yoga & Pilates",
-    text: "Stüdyoda ya da online; esneklik ve nefes çalışmaları için doğru partneri bul.",
-    image: "/images/branch-yoga.jpg",
-  },
-  {
-    title: "Outdoor & Trekking",
-    text: "Şehrin kalabalığından uzaklaşıp doğada yürüyüş ve kamp planları yap.",
-    image: "/images/branch-outdoor.jpg",
+    title: "Buluş & Spor yap",
+    text: "Etkinliklere katıl, challenge başlat ve ilerlemeni takip et.",
   },
 ];
 
 const whyCards = [
   {
-    title: "Anlık eşleşme",
-    text: "Son dakika sahil koşusu mu yapmak istiyorsun? O anda aktif olan kullanıcılarla anında eşleş.",
+    icon: "📈",
+    title: "Motivasyonun Artar",
+    text: "Birlikte spor yapmak, bırakmayı zorlaştırır.",
   },
   {
-    title: "Kendi etkinliklerini oluştur",
-    text: "“Cumartesi sabah Belgrad ormanı yürüyüşü” gibi etkinlikler oluştur, topluluğu davet et.",
+    icon: "📅",
+    title: "Düzenli Spor Alışkanlığı Oluşturur",
+    text: "Challenge'lar ve etkinlikler seni harekete geçirir.",
   },
   {
-    title: "Grup etkinliklerine katıl",
-    text: "Koşu grupları, sabah yoga buluşmaları ve basketbol maçlarına tek dokunuşla katıl.",
+    icon: "👥",
+    title: "Yeni İnsanlarla Tanışırsın",
+    text: "Aynı ilgi alanına sahip kişilerle spor temelli bağ kurarsın.",
   },
   {
-    title: "30’dan fazla spor branşı",
-    text: "Koşudan küreğe, tenisten dansa; sevdiğin branşlarda seni bekleyen birileri mutlaka var.",
-  },
-];
-
-const extraFeatures = [
-  {
-    title: "Adımsayar & Aktivite takibi",
-    text: "Günlük adım sayını, yaktığın kaloriyi ve antrenman sürelerini uygulama içinde takip et.",
-  },
-  {
-    title: "Kişisel & topluluk istatistikleri",
-    text: "Haftalık hedeflerini, katıldığın etkinlikleri ve topluluğa katkını grafiklerle gör.",
-  },
-  {
-    title: "Challenge & meydan okumalar",
-    text: "“7 gün üst üste 8.000 adım”, “Ayda 4 outdoor etkinlik” gibi meydan okumalarla kendine ve topluluğa meydan oku.",
+    icon: "🎉",
+    title: "Eğlenceli & Sosyal Bir Deneyim",
+    text: "Spor artık yalnız değil; topluluğun yan yana.",
   },
 ];
 
@@ -122,28 +105,66 @@ const testimonials = [
     role: "Yeni başlayanlar",
     text: "İkimiz de spora yeni başlıyorduk. Birlikte motive olup haftada 3 gün düzen yakaladık.",
   },
+  {
+    name: "Ayşe D.",
+    role: "Yoga tutkunu",
+    text: "Evde yalnız yoga yapmak sıkıcıydı. Şimdi haftada 3 kez online yoga arkadaşlarımla birlikte pratik yapıyoruz.",
+  },
+  {
+    name: "Burak S.",
+    role: "Basketbol seven",
+    text: "Potaya top atmak istediğimde artık arkadaşlarımı aramama gerek kalmıyor. Uygulamadan hemen birini buluyorum.",
+  },
+  {
+    name: "Elif T.",
+    role: "Outdoor tutkunu",
+    text: "Trekking için hep yalnız gidiyordum. Artık güvenli gruplar halinde doğada yürüyüş yapıyoruz.",
+  },
 ];
 
 const faqItems = [
   {
-    question: "Bu uygulama tam olarak ne yapıyor?",
-    answer:
-      `${APP_NAME}, bulunduğun şehirde seninle benzer spor hedeflerine sahip insanlarla tanışmanı sağlayan bir spor ve sosyalleşme platformudur. Birebir ya da grup eşleşmeleriyle yeni arkadaşlar edinip birlikte spor yapabilirsin.`,
+    question: "FitBul ücretli mi?",
+    answer: "Hayır, FitBul tamamen ücretsiz indirilebilir. Premium paket mevcuttur.",
   },
   {
-    question: "Eşleşmeler nasıl belirleniyor?",
+    question: "FitBul'da tanımadığım biriyle spor yapmak güvenli mi?",
     answer:
-      "Seviyen, seçtiğin branşlar, mesafe ve zaman tercihlerin; ayrıca önceki eşleşmelerden gelen geri bildirimler hesaba katılarak öneriler hazırlanır.",
+      "FitBul'da tüm profiller doğrulama sürecinden geçiriliyor. Kullanıcılar davranış kurallarını kabul etmek zorundadır. Güvenlik şikayetlerinde hızlı aksiyon alınır.",
   },
   {
-    question: "Güvenlik ve gizlilik nasıl sağlanıyor?",
+    question: "Spor arkadaşı bulmak için konumumu sürekli açık bırakmam gerekiyor mu?",
     answer:
-      "Profil doğrulama, topluluk kuralları ve bildirim sistemi ile güvenli bir ortam hedefliyoruz. Konumun yalnızca yaklaşık bölge olarak kullanılır, tam adres paylaşımı senin kontrolündedir.",
+      "Hayır. Uygulama yalnızca spor arkadaşı listesi veya etkinlik ekranına girdiğinde konumunu kullanır.",
   },
   {
-    question: "Uygulama ücretli mi?",
+    question: "Hangi spor dallarını destekliyor?",
     answer:
-      "Temel özellikler ücretsizdir. İleride isteğe bağlı premium özellikler (ileri istatistikler, özel etkinlikler vb.) eklemeyi planlıyoruz.",
+      "Koşu, yürüyüş, spor salonu, yoga, pilates, bisiklet, yüzme, hiking ve daha fazlası.",
+  },
+  {
+    question: "Challenge'lara katılmazsam uygulamadan verim alamam mı?",
+    answer:
+      "Hayır. Challenge'lar sadece ekstra motivasyon sağlar, zorunlu değildir.",
+  },
+  {
+    question: "FitBul topluluğu nasıl çalışıyor?",
+    answer:
+      "Kullanıcılar etkinliklere katılır, spor arkadaşı bulur veya challenge oluşturur. Tamamen pozitif, destekleyici ve motive edici bir kültür vardır.",
+  },
+  {
+    question: "FitBul yeni başlayanlar için uygun mu?",
+    answer:
+      "Kesinlikle. Birçok kullanıcı spora başlamak için motivasyon arıyor. FitBul özellikle yeni başlayanlara destek olan bir topluluk sunar.",
+  },
+  {
+    question: "Mesajlaştığım kişiler iletişim bilgilerimi görebiliyor mu?",
+    answer:
+      "Hayır. Telefon numarası gibi bilgiler gizlidir. Tüm iletişim FitBul içinde gerçekleşir.",
+  },
+  {
+    question: "Arkadaşımı davet edebilir miyim?",
+    answer: "Evet, uygulama içi davet sistemi ile arkadaşlarını çağırabilirsin.",
   },
 ];
 
@@ -155,17 +176,34 @@ function getInitials(name) {
 }
 
 function App() {
-  const [activeFaq, setActiveFaq] = useState(0);
+  const [activeFaq, setActiveFaq] = useState(null);
+  const [currentFeature, setCurrentFeature] = useState(0);
+
+  // Auto-scroll for features
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentFeature((prev) => (prev + 1) % mainFeatures.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const handleFeatureScroll = (direction) => {
+    if (direction === "next") {
+      setCurrentFeature((prev) => (prev + 1) % mainFeatures.length);
+    } else {
+      setCurrentFeature((prev) => (prev - 1 + mainFeatures.length) % mainFeatures.length);
+    }
+  };
 
   return (
     <div className="app">
       {/* NAVBAR */}
       <header className="top-nav">
         <div className="container nav-inner">
-          <div className="logo">
-            <span className="logo-mark">MB</span>
+          <a href="#hero" className="logo">
+            <img src="/logo.png" alt="FitBul Logo" className="logo-image" />
             <span className="logo-text">{APP_NAME}</span>
-          </div>
+          </a>
           <nav className="nav-links">
             {navItems.map((item) => (
               <a key={item.href} href={item.href}>
@@ -174,8 +212,7 @@ function App() {
             ))}
           </nav>
           <div className="nav-cta">
-            <button className="btn ghost">Giriş Yap</button>
-            <button className="btn primary">Ücretsiz Dene</button>
+            <button className="btn primary">İletişim</button>
           </div>
         </div>
       </header>
@@ -205,11 +242,11 @@ function App() {
                 <button
                   className="btn outline btn-lg"
                   onClick={() => {
-                    const el = document.getElementById("branches");
+                    const el = document.getElementById("features");
                     if (el) el.scrollIntoView({ behavior: "smooth" });
                   }}
                 >
-                  Branşlara Göz At
+                  Özellikleri Keşfet
                 </button>
               </div>
               <div className="hero-meta">
@@ -282,7 +319,13 @@ function App() {
 
             <div className="how-grid">
               {howSteps.map((step, index) => (
-                <div key={step.title} className="how-card">
+                <div 
+                  key={step.title} 
+                  className="how-card"
+                  style={{
+                    animationDelay: `${index * 0.1}s`
+                  }}
+                >
                   <div className="how-number">{index + 1}</div>
                   <h3>{step.title}</h3>
                   <p>{step.text}</p>
@@ -292,204 +335,242 @@ function App() {
           </div>
         </section>
 
-        {/* BRANCHES CAROUSEL STİLİ BÖLÜM */}
-        <section id="branches" className="section">
+        {/* ABOUT / HAKKIMIZDA */}
+        <section id="about" className="section">
           <div className="container">
-            <div className="branches-header">
-              <div>
-                <h2>Branşlar</h2>
+            <div className="about-grid">
+              <div className="about-image-wrapper">
+                <img 
+                  src="/images/about.jpg" 
+                  alt="FitBul Hakkında" 
+                  className="about-image"
+                />
+              </div>
+              <div className="about-content">
+                <h2>Hakkımızda</h2>
                 <p>
-                  Aşağıdaki spor branşlarında tesis bul, yer ayırt, partnerinle
-                  maç yap, anılarını paylaş ve gelişimini istatistiklerden takip et.
+                  FitBul, sporla sosyalleşmenin gücüne inanan bir ekip tarafından 
+                  hayata geçirildi. Amacımız, spor yapmak isteyen ancak tek başına 
+                  motive olamayan insanları bir araya getirmek.
                 </p>
-              </div>
-              <button className="link-button">Tümünü Gör →</button>
-            </div>
-
-            <div className="branches-scroll-wrapper">
-              <button className="round-arrow">&larr;</button>
-              <div className="branches-scroll">
-                {branchCards.map((b) => (
-                  <article
-                    key={b.title}
-                    className="branch-card"
-                    style={{ backgroundImage: `url(${b.image})` }}
-                  >
-                    <div className="branch-overlay">
-                      <h3>{b.title}</h3>
-                      <p>{b.text}</p>
-                    </div>
-                  </article>
-                ))}
-              </div>
-              <button className="round-arrow">&rarr;</button>
-            </div>
-          </div>
-        </section>
-
-        {/* NERELELERDEYİZ – HARİTALI BÖLÜM */}
-        <section id="locations" className="section section-muted">
-          <div className="container locations-grid">
-            <div className="locations-map">
-              {/* 
-                Buraya looping bir GIF ya da kısa mp4 koyabilirsin.
-                Örnek: public/images/map-anim.gif
-              */}
-              <img
-                src="/images/map-anim.gif"
-                alt="FitBul şehirler haritası"
-                className="locations-map-img"
-              />
-            </div>
-            <div className="locations-copy">
-              <h2>Nerelerdeyiz?</h2>
-              <p>
-                {APP_NAME} şu anda büyük şehirlerde aktif; yeni şehirlere doğru
-                açılmaya devam ediyor. Harita üzerinde bir şehrin yeşil
-                yanıp sönmesini gördüğünde, orada buluşmaya hazır bir topluluk
-                var demektir.
-              </p>
-              <div className="location-tags">
-                <span>İstanbul</span>
-                <span>Ankara</span>
-                <span>İzmir</span>
-                <span>Bursa</span>
-                <span>Antalya</span>
-              </div>
-              <p className="locations-note">
-                🌍 Harita görselini GIF veya Lottie animasyonu olarak kullanman
-                güzel olur; biz burada şimdilik GIF yolu bekliyoruz.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* NEDEN BİZ */}
-        <section id="why" className="section">
-          <div className="container why-grid">
-            <div className="why-visual">
-              <div className="why-circle-bg" />
-              <div className="why-card-main">
-                <h3>Neden {APP_NAME}?</h3>
                 <p>
-                  Çünkü “sonra bakarım” deyip ertelenen spor planlarını gerçek
-                  buluşmalara çevirmek için tasarlandı.
+                  Her gün binlerce kullanıcı FitBul üzerinden spor partneri buluyor, 
+                  etkinliklere katılıyor ve challenge'lara katılarak hedeflerine ulaşıyor. 
+                  Biz sadece bir uygulama değil, sporla büyüyen bir topluluk inşa ediyoruz.
                 </p>
-              </div>
-            </div>
-            <div className="why-cards">
-              {whyCards.map((item, i) => (
-                <div key={item.title} className="why-card-item">
-                  <div className="why-icon">{i + 1}</div>
-                  <div>
-                    <h4>{item.title}</h4>
-                    <p>{item.text}</p>
+                <div className="about-stats">
+                  <div className="stat-item">
+                    <div className="stat-number">10K+</div>
+                    <div className="stat-label">Aktif Kullanıcı</div>
+                  </div>
+                  <div className="stat-item">
+                    <div className="stat-number">50K+</div>
+                    <div className="stat-label">Tamamlanan Etkinlik</div>
+                  </div>
+                  <div className="stat-item">
+                    <div className="stat-number">30+</div>
+                    <div className="stat-label">Spor Branşı</div>
                   </div>
                 </div>
-              ))}
+              </div>
             </div>
           </div>
         </section>
 
-        {/* ANA ÖZELLİKLER (öncekiler) */}
-        <section id="features" className="section section-muted">
-          <div className="container">
-            <div className="section-header">
-              <h2>Öne çıkan özellikler</h2>
-              <p>
-                Yalnız spor yapmayı sevmeyenler için tasarlandı. Hem sosyal hem
-                güvenli, hem de motive edici.
-              </p>
-            </div>
-
-            <div className="features-grid">
-              {features.map((f) => (
-                <div key={f.title} className="feature-card">
-                  <h3>{f.title}</h3>
-                  <p>{f.description}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* EKSTRA ÖZELLİKLER */}
-        <section id="extras" className="section">
+        {/* FEATURES - SCROLLABLE WITH IMAGES */}
+        <section id="features" className="section">
           <div className="container">
             <div className="section-header center">
-              <h2>Ekstra özellikler</h2>
+              <h2>Özellikler</h2>
               <p>
-                Sadece partner bulmak değil; hareket etme alışkanlığını kalıcı
-                hale getirmek için tasarlandı.
+                FitBul ile sporunu sosyal hale getir, hedeflerini takip et ve
+                motivasyonunu sürekli canlı tut.
               </p>
             </div>
 
-            <div className="extras-grid">
-              {extraFeatures.map((ex) => (
-                <div key={ex.title} className="extra-card">
-                  <h3>{ex.title}</h3>
-                  <p>{ex.text}</p>
+            <div className="features-carousel-wrapper">
+              <button
+                className="carousel-arrow left"
+                onClick={() => handleFeatureScroll("prev")}
+                aria-label="Önceki özellik"
+              >
+                ←
+              </button>
+
+              <div className="features-carousel">
+                <div
+                  className="features-track"
+                  style={{
+                    transform: `translateX(-${currentFeature * 100}%)`,
+                  }}
+                >
+                  {mainFeatures.map((feature, index) => (
+                    <div key={feature.number} className="feature-slide">
+                      <div className="feature-content">
+                        <div className="feature-image-wrapper">
+                          <img
+                            src={feature.image}
+                            alt={feature.title}
+                            className="feature-image"
+                          />
+                        </div>
+                        <div className="feature-text">
+                          <div className="feature-number-badge">
+                            {feature.number}
+                          </div>
+                          <h3>{feature.title}</h3>
+                          <p>{feature.description}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
+              </div>
+
+              <button
+                className="carousel-arrow right"
+                onClick={() => handleFeatureScroll("next")}
+                aria-label="Sonraki özellik"
+              >
+                →
+              </button>
+            </div>
+
+            <div className="carousel-indicators">
+              {mainFeatures.map((_, index) => (
+                <button
+                  key={index}
+                  className={`indicator ${index === currentFeature ? "active" : ""}`}
+                  onClick={() => setCurrentFeature(index)}
+                  aria-label={`Özellik ${index + 1}`}
+                />
               ))}
             </div>
           </div>
         </section>
 
-        {/* TESTIMONIALS */}
-        <section className="section section-muted" id="testimonials">
+        {/* NEDEN FİTBUL */}
+        <section id="why" className="section section-muted">
+          <div className="container">
+            <div className="section-header center">
+              <h2>Neden FitBul?</h2>
+              <p>
+                Çünkü "sonra bakarım" deyip ertelenen spor planlarını gerçek
+                buluşmalara çevirmek için tasarlandı.
+              </p>
+            </div>
+
+            <div className="why-main-grid">
+              <div className="why-image-section">
+                <img 
+                  src="/images/images.png" 
+                  alt="Neden FitBul" 
+                  className="why-main-image"
+                />
+              </div>
+              
+              <div className="why-cards-grid">
+                {whyCards.map((item) => (
+                  <div key={item.title} className="why-card">
+                    <div className="why-emoji">{item.icon}</div>
+                    <h3>{item.title}</h3>
+                    <p>{item.text}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* TESTIMONIALS - DOUBLE ROW SCROLLING */}
+        <section className="section" id="testimonials">
           <div className="container">
             <div className="section-header center">
               <h2>Kullanıcılarımız ne diyor?</h2>
             </div>
 
-            <div className="testimonials-grid">
-              {testimonials.map((t) => (
-                <div key={t.name} className="testimonial-card">
-                  <div className="testimonial-header">
-                    <div className="avatar">{getInitials(t.name)}</div>
-                    <div>
-                      <div className="testimonial-name">{t.name}</div>
-                      <div className="testimonial-role">{t.role}</div>
+            <div className="testimonials-carousel">
+              <div className="testimonials-row scroll-right">
+                {[...testimonials, ...testimonials].map((t, index) => (
+                  <div key={`top-${index}`} className="testimonial-card-scroll">
+                    <div className="testimonial-header">
+                      <div className="avatar">{getInitials(t.name)}</div>
+                      <div>
+                        <div className="testimonial-name">{t.name}</div>
+                        <div className="testimonial-role">{t.role}</div>
+                      </div>
                     </div>
+                    <p>"{t.text}"</p>
                   </div>
-                  <p>“{t.text}”</p>
-                </div>
-              ))}
+                ))}
+              </div>
+
+              <div className="testimonials-row scroll-left">
+                {[...testimonials, ...testimonials].map((t, index) => (
+                  <div key={`bottom-${index}`} className="testimonial-card-scroll">
+                    <div className="testimonial-header">
+                      <div className="avatar">{getInitials(t.name)}</div>
+                      <div>
+                        <div className="testimonial-name">{t.name}</div>
+                        <div className="testimonial-role">{t.role}</div>
+                      </div>
+                    </div>
+                    <p>"{t.text}"</p>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </section>
 
-        {/* FAQ */}
-        <section id="faq" className="section">
+        {/* FAQ - ENHANCED ANIMATED */}
+        <section id="faq" className="section section-muted">
           <div className="container">
             <div className="section-header center">
               <h2>Sıkça sorulan sorular</h2>
+              <p>Merak ettiklerinin cevaplarını burada bulabilirsin</p>
             </div>
 
-            <div className="faq-list">
+            <div className="faq-list-enhanced">
               {faqItems.map((item, idx) => {
                 const isOpen = activeFaq === idx;
                 return (
                   <div
                     key={item.question}
-                    className={`faq-item ${isOpen ? "open" : ""}`}
+                    className={`faq-item-enhanced ${isOpen ? "open" : ""}`}
                   >
                     <button
-                      className="faq-header"
+                      className="faq-header-enhanced"
                       onClick={() =>
-                        setActiveFaq(isOpen ? -1 : idx)
+                        setActiveFaq(isOpen ? null : idx)
                       }
                     >
-                      <span className="faq-symbol">
-                        {isOpen ? "−" : "+"}
+                      <span className="faq-question">{item.question}</span>
+                      <span className="faq-icon">
+                        <svg
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          {isOpen ? (
+                            <line x1="5" y1="12" x2="19" y2="12" />
+                          ) : (
+                            <>
+                              <line x1="12" y1="5" x2="12" y2="19" />
+                              <line x1="5" y1="12" x2="19" y2="12" />
+                            </>
+                          )}
+                        </svg>
                       </span>
-                      <span>{item.question}</span>
                     </button>
-                    {isOpen && (
-                      <div className="faq-body">
-                        <p>{item.answer}</p>
-                      </div>
-                    )}
+                    <div className={`faq-body-enhanced ${isOpen ? "open" : ""}`}>
+                      <p>{item.answer}</p>
+                    </div>
                   </div>
                 );
               })}
@@ -498,9 +579,14 @@ function App() {
         </section>
 
         {/* DOWNLOAD / CTA */}
-        <section id="download" className="section section-accent">
-          <div className="container download-inner">
-            <div>
+        <section id="download" className="section section-accent-enhanced">
+          <div className="cta-decoration cta-decoration-1"></div>
+          <div className="cta-decoration cta-decoration-2"></div>
+          <div className="cta-decoration cta-decoration-3"></div>
+          
+          <div className="container download-inner-enhanced">
+            <div className="cta-content">
+              <div className="cta-icon">🚀</div>
               <h2>Spor partnerini bulmaya hazır mısın?</h2>
               <p>
                 Uygulamayı indir, profilini oluştur ve şehrindeki spor
@@ -508,14 +594,29 @@ function App() {
                 azalsın.
               </p>
               <div className="store-buttons">
-                <button className="store-btn">
-                  <span className="store-big">App Store</span>
-                  <span className="store-small">Yakında</span>
+                <button className="store-btn-enhanced">
+                  <svg className="store-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M18.71 19.5C17.88 20.74 17 21.95 15.66 21.97C14.32 22 13.89 21.18 12.37 21.18C10.84 21.18 10.37 21.95 9.09997 22C7.78997 22.05 6.79997 20.68 5.95997 19.47C4.24997 17 2.93997 12.45 4.69997 9.39C5.56997 7.87 7.12997 6.91 8.81997 6.88C10.1 6.86 11.32 7.75 12.11 7.75C12.89 7.75 14.37 6.68 15.92 6.84C16.57 6.87 18.39 7.1 19.56 8.82C19.47 8.88 17.39 10.1 17.41 12.63C17.44 15.65 20.06 16.66 20.09 16.67C20.06 16.74 19.67 18.11 18.71 19.5ZM13 3.5C13.73 2.67 14.94 2.04 15.94 2C16.07 3.17 15.6 4.35 14.9 5.19C14.21 6.04 13.07 6.7 11.95 6.61C11.8 5.46 12.36 4.26 13 3.5Z"/>
+                  </svg>
+                  <div>
+                    <span className="store-small">Download on the</span>
+                    <span className="store-big">App Store</span>
+                  </div>
                 </button>
-                <button className="store-btn">
-                  <span className="store-big">Google Play</span>
-                  <span className="store-small">Yakında</span>
+                <button className="store-btn-enhanced">
+                  <svg className="store-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.6 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.53,12.9 20.18,13.18L17.89,14.5L15.39,12L17.89,9.5L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z"/>
+                  </svg>
+                  <div>
+                    <span className="store-small">GET IT ON</span>
+                    <span className="store-big">Google Play</span>
+                  </div>
                 </button>
+              </div>
+              <div className="cta-features">
+                <span>✓ Ücretsiz İndir</span>
+                <span>✓ Hemen Başla</span>
+                <span>✓ Kredi Kartı Gerektirmez</span>
               </div>
             </div>
           </div>
@@ -526,10 +627,10 @@ function App() {
       <footer className="footer">
         <div className="container footer-inner">
           <div className="footer-left">
-            <div className="logo">
-              <span className="logo-mark">MB</span>
+            <a href="#hero" className="logo">
+              <img src="/logo.png" alt="FitBul Logo" className="logo-image" />
               <span className="logo-text">{APP_NAME}</span>
-            </div>
+            </a>
             <p className="footer-text">
               {APP_NAME}, sporla sosyalleşmek isteyenleri bir araya getiren
               yeşil ve enerjik bir topluluk.
@@ -538,13 +639,13 @@ function App() {
           <div className="footer-columns">
             <div>
               <h4>Ürün</h4>
-              <a href="#how">Nasıl çalışır?</a>
-              <a href="#branches">Branşlar</a>
-              <a href="#extras">Özellikler</a>
+              <a href="#about">Hakkımızda</a>
+              <a href="#features">Hizmetlerimiz</a>
+              <a href="#why">Neden FitBul?</a>
             </div>
             <div>
               <h4>Topluluk</h4>
-              <a href="#why">Neden biz?</a>
+              <a href="#testimonials">Kullanıcılar</a>
               <a href="#faq">SSS</a>
             </div>
             <div>
