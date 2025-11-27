@@ -13,23 +13,27 @@ const navItems = [
 
 const howSteps = [
   {
+    number: "1",
     title: "Uygulamayı indir",
-    text: "FitBul'u App Store veya Google Play'den ücretsiz indir. Kayıt ol, birkaç dakikada hazır ol.",
+    text: "FitBul'u App Store veya Google Play'den birkaç dokunuşla indir. Hesabını oluştur ve spor yolculuğuna hemen başla.",
     image: "/images/how_step1.jpg"
   },
   {
+    number: "2",
     title: "Profilini oluştur",
-    text: "Spor seviyeni, hedeflerini ve ilgi alanlarını ekle. Sistem seni en doğru kişilerle eşleştirsin.",
+    text: "Spor seviyeni, ilgi alanlarını ve hedeflerini ekle. FitBul seni sana en uygun spor partnerleriyle eşleştirir.",
     image: "/images/how_step2.jpg"
   },
   {
+    number: "3",
     title: "Konumuna göre arkadaş bul",
-    text: "Yakınındaki spor tutkunlarını anında gör. Uygun kişileri seç, eşleş ve uygulama içinden mesajlaş.",
+    text: "Sana en yakın spor tutkunlarını keşfet, filtrele, eşleş ve uygulama içinden güvenle mesajlaş.",
     image: "/images/how_step3.jpg"
   },
   {
+    number: "4",
     title: "Buluş & düzenli spor yap",
-    text: "Etkinliklere katıl, kendi grubunu kur veya challenge başlat. Adım adım ilerlemeni takip et.",
+    text: "Etkinliklere katıl, grup kur veya challenge başlat. Beraber spor yaparak motivasyonunu yükselt.",
     image: "/images/how_step4.jpg"
   },
 ];
@@ -41,36 +45,46 @@ const mainFeatures = [
     title: "Anında Spor Arkadaşı Bul",
     description:
       "Konumuna göre aynı anda spor yapmak isteyen kişileri keşfet. Tek dokunuşla eşleş, mesajlaş ve sporunu sosyal hale getir.",
+    badge: "FACTS & NUMBERS",
+    image: "/images/feature1.jpg"
   },
   {
     number: "2",
     title: "Etkinlik Oluştur & Katıl",
     description:
       "Koşu grubu, sabah yürüyüşü, yoga, açık hava fitness... Topluluk etkinliklerine katıl veya kendi spor etkinliğini oluştur.",
+    badge: "TESTIMONIAL",
+    image: "/images/feature2.jpg"
   },
   {
     number: "3",
     title: "Challenge Oluştur & Katıl",
     description:
       "Hedef koy, challenge başlat veya başkalarının meydan okumalarına katıl. İlerleme ekranı ile hedeflerini takip et.",
+    badge: "CUSTOMER STORIES",
+    image: "/images/feature3.jpg"
   },
   {
     number: "4",
     title: "Güçlü Topluluk",
     description:
       "Seni anlayan, motive eden ve hareket ettiren bir toplulukla tanış. Spor artık yalnız değil, sosyal.",
+    badge: "REVIEW",
+    image: "/images/feature4.jpg"
   },
   {
     number: "5",
     title: "İlerleme Takibi",
     description:
       "Tamamladığın etkinlikleri ve challenge'ları tek ekranda gör. Spor yolculuğunu net bir şekilde takip et.",
+    badge: "INSIGHTS",
+    image: "/images/feature5.jpg"
   },
 ];
 
 const whyCards = [
   {
-    icon: "📈",
+    icon: "✔️",
     title: "Motivasyonun Artar",
     shortText: "Birlikte spor yapmak, tek başına yaptığından çok daha sürdürülebilir hale gelir.",
     detailedText: "Araştırmalar gösteriyor ki, sosyal destek alan sporcuların hedeflerine ulaşma oranı %65 daha yüksek. Bir spor partnerine sahip olmak, motivasyonunu sürekli canlı tutar ve seni ertelemeden harekete geçirir.",
@@ -82,7 +96,7 @@ const whyCards = [
     image: "/images/why_fitbul1.png"
   },
   {
-    icon: "📅",
+    icon: "🏅",
     title: "Düzenli Alışkanlık Kazandırır",
     shortText: "Etkinlikler ve challenge'lar seni ertelemeden harekete geçirir.",
     detailedText: "Düzenli spor yapmak için en büyük engel 'başlangıç' yapmaktır. FitBul ile planlanmış etkinlikler ve sosyal bağlılık sayesinde spor artık hayatının doğal bir parçası haline gelir. İlk 21 günde alışkanlık oluşturmak çok daha kolay!",
@@ -209,6 +223,11 @@ function App() {
   const [activeUsers, setActiveUsers] = useState(0);
   const [completedEvents, setCompletedEvents] = useState(0);
   const [sportBranches, setSportBranches] = useState(0);
+  
+  // Newsletter state
+  const [newsletterEmail, setNewsletterEmail] = useState("");
+  const [newsletterStatus, setNewsletterStatus] = useState(""); // success, error, ""
+  const [subscribedEmails, setSubscribedEmails] = useState([]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -253,6 +272,36 @@ function App() {
   const scrollToId = (id) => {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
+
+  // Newsletter submit handler
+  const handleNewsletterSubmit = (e) => {
+    e.preventDefault();
+    
+    if (!newsletterEmail || !newsletterEmail.includes("@")) {
+      setNewsletterStatus("error");
+      setTimeout(() => setNewsletterStatus(""), 3000);
+      return;
+    }
+
+    // Check if already subscribed
+    if (subscribedEmails.includes(newsletterEmail)) {
+      setNewsletterStatus("duplicate");
+      setTimeout(() => setNewsletterStatus(""), 3000);
+      return;
+    }
+
+    // Add to subscribed emails
+    setSubscribedEmails([...subscribedEmails, newsletterEmail]);
+    
+    // Save to localStorage
+    const existingEmails = JSON.parse(localStorage.getItem("newsletterEmails") || "[]");
+    localStorage.setItem("newsletterEmails", JSON.stringify([...existingEmails, newsletterEmail]));
+    
+    setNewsletterStatus("success");
+    setNewsletterEmail("");
+    
+    setTimeout(() => setNewsletterStatus(""), 5000);
   };
 
   return (
@@ -363,13 +412,8 @@ function App() {
           </div>
         </section>
 
-        {/* FEATURES */}
-        <section id="features" className="section features-with-bg">
-          <div className="features-bg-wrapper">
-            <img src="/images/images2.png" alt="" className="features-bg-image" />
-            <div className="features-bg-overlay" />
-          </div>
-
+        {/* HİZMETLERİMİZ - Sliding Cards Style */}
+        <section id="features" className="section features-carousel-section">
           <div className="container">
             <div className="section-header center">
               <h2>Hizmetlerimiz</h2>
@@ -378,16 +422,24 @@ function App() {
                 motivasyonunu sürekli canlı tut.
               </p>
             </div>
+          </div>
 
-            <div className="features-list-clean">
-              {mainFeatures.map((feature, index) => (
-                <div
-                  key={feature.number}
-                  className="feature-item-clean"
-                  style={{ animationDelay: `${index * 0.1}s` }}
-                >
-                  <div className="feature-clean-number">{feature.number}</div>
-                  <div className="feature-clean-content">
+          <div className="features-carousel">
+            <div className="features-row">
+              {[...mainFeatures, ...mainFeatures].map((feature, index) => (
+                <div key={`feature-${index}`} className="feature-carousel-card">
+                  <div className="feature-carousel-badge">{feature.badge}</div>
+                  <div className="feature-carousel-image-wrapper">
+                    <img 
+                      src={feature.image} 
+                      alt={feature.title}
+                      className="feature-carousel-image"
+                    />
+                    <div className="feature-carousel-overlay">
+                      <div className="feature-carousel-number">{feature.number}</div>
+                    </div>
+                  </div>
+                  <div className="feature-carousel-content">
                     <h3>{feature.title}</h3>
                     <p>{feature.description}</p>
                   </div>
@@ -458,7 +510,7 @@ function App() {
           </div>
         </section>
 
-        {/* NASIL ÇALIŞIR - Altında */}
+        {/* NASIL ÇALIŞIR */}
         <section id="how" className="section">
           <div className="container">
             <div className="section-header center">
@@ -468,29 +520,29 @@ function App() {
                 buluşturur.
               </p>
             </div>
+          </div>
 
-            <div className="how-card-grid">
-              {howSteps.map((step, index) => (
-                <div
-                  key={step.title}
-                  className="how-card"
-                  style={{ animationDelay: `${index * 0.15}s` }}
-                >
-                  <img 
-                    src={step.image} 
-                    alt={step.title}
-                    className="how-card-image"
-                  />
-                  <div className="how-card-overlay">
-                    <div className="how-card-icon">{step.icon}</div>
-                    <div className="how-card-text">
-                      <h3>{step.title}</h3>
-                      <p>{step.text}</p>
-                    </div>
+          <div className="how-card-grid">
+            {howSteps.map((step, index) => (
+              <div
+                key={step.title}
+                className="how-card"
+                style={{ animationDelay: `${index * 0.15}s` }}
+              >
+                <img
+                  src={step.image}
+                  alt={step.title}
+                  className="how-card-image"
+                />
+                <div className="how-card-overlay">
+                  <div className="how-card-icon">{step.number}</div>
+                  <div className="how-card-text">
+                    <h3>{step.title}</h3>
+                    <p>{step.text}</p>
                   </div>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         </section>
 
@@ -535,60 +587,48 @@ function App() {
           </div>
         </section>
 
-        {/* FAQ */}
-        <section id="faq" className="section section-muted">
+        {/* FAQ - Yeni Tasarım */}
+        <section id="faq" className="section">
           <div className="container">
-            <div className="faq-section-header">
-              <h2>Sıkça Sorulan Sorular</h2>
-              <p>Merak ettiklerinin cevaplarını burada bulabilirsin.</p>
-            </div>
+            <div className="faq-wrapper">
+              {/* Sol taraf - Bilgi */}
+              <div className="faq-left-info">
+                <h2>Sıkça Sorulan Sorular</h2>
+                <p>Merak ettiklerinin cevaplarını burada bulabilirsin. FitBul hakkında en çok sorulan soruların yanıtları.</p>
+              </div>
 
-            {/* 2 sütun grid */}
-            <div className="faq-grid">
-              {faqItems.map((item, idx) => {
-                const isOpen = activeFaq === idx;
-                return (
-                  <div
-                    key={item.question}
-                    className={`faq-item-enhanced ${isOpen ? "open" : ""}`}
-                  >
-                    <button
-                      className="faq-header-enhanced"
-                      onClick={() => setActiveFaq(isOpen ? null : idx)}
-                    >
-                      <span className="faq-question">{item.question}</span>
-                      <span className="faq-icon">
-                        <svg
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          {isOpen ? (
-                            <line x1="5" y1="12" x2="19" y2="12" />
-                          ) : (
-                            <>
-                              <line x1="12" y1="5" x2="12" y2="19" />
-                              <line x1="5" y1="12" x2="19" y2="12" />
-                            </>
-                          )}
-                        </svg>
-                      </span>
-                    </button>
+              {/* Sağ taraf - FAQ Listesi */}
+              <div className="faq-grid">
+                {faqItems.map((item, idx) => {
+                  const isOpen = activeFaq === idx;
+                  return (
                     <div
-                      className={`faq-body-enhanced ${
-                        isOpen ? "open" : ""
-                      }`}
+                      key={item.question}
+                      className={`faq-item-enhanced ${isOpen ? "open" : ""}`}
                     >
-                      <p>{item.answer}</p>
+                      <button
+                        className="faq-header-enhanced"
+                        onClick={() => setActiveFaq(isOpen ? null : idx)}
+                      >
+                        <div className="faq-question-wrapper">
+                          <span className="faq-icon-green">Q.</span>
+                          <span className="faq-question">{item.question}</span>
+                        </div>
+                        <span className="faq-icon">
+                          {isOpen ? "−" : "+"}
+                        </span>
+                      </button>
+                      <div
+                        className={`faq-body-enhanced ${
+                          isOpen ? "open" : ""
+                        }`}
+                      >
+                        <p>{item.answer}</p>
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
           </div>
         </section>
@@ -649,36 +689,100 @@ function App() {
           </div>
         </section>
 
-        {/* NEWSLETTER */}
-        <section className="newsletter-section">
-          <div className="newsletter-wrapper">
-            <div className="newsletter-inner">
-              <div className="newsletter-left">
-                <div className="newsletter-icon">📧</div>
-                <div className="newsletter-content">
-                  <h2>Abone Olun ve Yeniliklerden Haberdar Olun</h2>
-                </div>
+        {/* NEWSLETTER - Yeni Tasarım: Sol Input, Sağ Açıklama */}
+        <section className="newsletter-section-new">
+          <div className="container">
+            <div className="newsletter-wrapper-new">
+              {/* Sol taraf - Form */}
+              <div className="newsletter-left-new">
+                <h2>Yeniliklerden İlk Sen Haberdar Ol!</h2>
+                <p>Özel kampanyalar, yeni özellikler ve spor ipuçları için bültene abone ol.</p>
+                
+                <form className="newsletter-form-new" onSubmit={handleNewsletterSubmit}>
+                  <div className="newsletter-input-group-new">
+                    <input
+                      type="email"
+                      placeholder="E-posta adresinizi girin"
+                      className="newsletter-input-new"
+                      value={newsletterEmail}
+                      onChange={(e) => setNewsletterEmail(e.target.value)}
+                      required
+                    />
+                    <button type="submit" className="newsletter-button-new">
+                      Abone Ol
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <line x1="5" y1="12" x2="19" y2="12"/>
+                        <polyline points="12 5 19 12 12 19"/>
+                      </svg>
+                    </button>
+                  </div>
+                  
+                  {newsletterStatus === "success" && (
+                    <div className="newsletter-message success">
+                      ✓ Başarıyla abone oldunuz! E-postanızı kontrol edin.
+                    </div>
+                  )}
+                  {newsletterStatus === "error" && (
+                    <div className="newsletter-message error">
+                      ✗ Lütfen geçerli bir e-posta adresi girin.
+                    </div>
+                  )}
+                  {newsletterStatus === "duplicate" && (
+                    <div className="newsletter-message error">
+                      ⓘ Bu e-posta adresi zaten kayıtlı.
+                    </div>
+                  )}
+                </form>
               </div>
 
-              <div className="newsletter-right">
-                <form
-                  className="newsletter-form"
-                  onSubmit={(e) => e.preventDefault()}
-                >
-                  <input
-                    type="email"
-                    placeholder="E-posta adresinizi girin"
-                    className="newsletter-input"
-                    required
-                  />
-                  <button type="submit" className="newsletter-button">
-                    Abone Ol
-                  </button>
-                </form>
+              {/* Sağ taraf - Faydalar */}
+              <div className="newsletter-right-new">
+                <div className="newsletter-benefits-new">
+                  <div className="newsletter-benefit-item-new">
+                    <div className="newsletter-benefit-icon-new">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                        <polyline points="20 6 9 17 4 12"/>
+                      </svg>
+                    </div>
+                    <div>
+                      <h4>Haftalık Spor İpuçları</h4>
+                      <p>Uzman antrenörlerden ipuçları</p>
+                    </div>
+                  </div>
+
+                  <div className="newsletter-benefit-item-new">
+                    <div className="newsletter-benefit-icon-new">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                        <polyline points="20 6 9 17 4 12"/>
+                      </svg>
+                    </div>
+                    <div>
+                      <h4>Özel İndirimler</h4>
+                      <p>Premium özelliklerde indirim</p>
+                    </div>
+                  </div>
+
+                  <div className="newsletter-benefit-item-new">
+                    <div className="newsletter-benefit-icon-new">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                        <polyline points="20 6 9 17 4 12"/>
+                      </svg>
+                    </div>
+                    <div>
+                      <h4>Yeni Özellikler</h4>
+                      <p>İlk sen haberdar ol</p>
+                    </div>
+                  </div>
+                </div>
+
+                <p className="newsletter-privacy-new">
+                  🔒 Gizliliğinize önem veriyoruz. E-posta adresiniz güvende.
+                </p>
               </div>
             </div>
           </div>
         </section>
+
 
       </main>
 
