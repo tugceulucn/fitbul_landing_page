@@ -1,5 +1,5 @@
 // src/App.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const APP_NAME = "FitBul";
 
@@ -14,21 +14,26 @@ const navItems = [
 const howSteps = [
   {
     title: "Uygulamayı indir",
-    text: "FitBul'u App Store veya Google Play'den ücretsiz indir.",
+    text: "FitBul'u App Store veya Google Play'den ücretsiz indir. Kayıt ol, birkaç dakikada hazır ol.",
+    image: "/images/how_step1.jpg"
   },
   {
     title: "Profilini oluştur",
-    text: "Seviyeni, ilgilendiğin spor branşlarını ve hedeflerini ekle.",
+    text: "Spor seviyeni, hedeflerini ve ilgi alanlarını ekle. Sistem seni en doğru kişilerle eşleştirsin.",
+    image: "/images/how_step2.jpg"
   },
   {
     title: "Konumuna göre arkadaş bul",
-    text: "Anlık spor arkadaşlarını gör, eşleş ve mesajlaş.",
+    text: "Yakınındaki spor tutkunlarını anında gör. Uygun kişileri seç, eşleş ve uygulama içinden mesajlaş.",
+    image: "/images/how_step3.jpg"
   },
   {
-    title: "Buluş & Spor yap",
-    text: "Etkinliklere katıl, challenge başlat ve ilerlemeni takip et.",
+    title: "Buluş & düzenli spor yap",
+    text: "Etkinliklere katıl, kendi grubunu kur veya challenge başlat. Adım adım ilerlemeni takip et.",
+    image: "/images/how_step4.jpg"
   },
 ];
+
 
 const mainFeatures = [
   {
@@ -67,22 +72,50 @@ const whyCards = [
   {
     icon: "📈",
     title: "Motivasyonun Artar",
-    text: "Birlikte spor yapmak, tek başına yaptığından çok daha sürdürülebilir hale gelir.",
+    shortText: "Birlikte spor yapmak, tek başına yaptığından çok daha sürdürülebilir hale gelir.",
+    detailedText: "Araştırmalar gösteriyor ki, sosyal destek alan sporcuların hedeflerine ulaşma oranı %65 daha yüksek. Bir spor partnerine sahip olmak, motivasyonunu sürekli canlı tutar ve seni ertelemeden harekete geçirir.",
+    stats: [
+      { number: "%85", label: "Motivasyon Artışı" },
+      { number: "3x", label: "Daha Fazla Süreklilik" },
+      { number: "%92", label: "Hedef Başarısı" }
+    ],
+    image: "/images/why_fitbul1.png"
   },
   {
     icon: "📅",
     title: "Düzenli Alışkanlık Kazandırır",
-    text: "Etkinlikler ve challenge'lar seni ertelemeden harekete geçirir.",
+    shortText: "Etkinlikler ve challenge'lar seni ertelemeden harekete geçirir.",
+    detailedText: "Düzenli spor yapmak için en büyük engel 'başlangıç' yapmaktır. FitBul ile planlanmış etkinlikler ve sosyal bağlılık sayesinde spor artık hayatının doğal bir parçası haline gelir. İlk 21 günde alışkanlık oluşturmak çok daha kolay!",
+    stats: [
+      { number: "4x", label: "Haftalık Spor" },
+      { number: "%78", label: "Düzenli Katılım" },
+      { number: "21", label: "Gün Alışkanlık" }
+    ],
+    image: "/images/why_fitbul2.png"
   },
   {
     icon: "👥",
     title: "Yeni İnsanlarla Tanışırsın",
-    text: "Aynı hedeflere sahip insanlarla spor temelli bağ kurarsın.",
+    shortText: "Aynı hedeflere sahip insanlarla spor temelli bağ kurarsın.",
+    detailedText: "FitBul topluluğu sadece spor yapmakla kalmaz, aynı zamanda yeni arkadaşlıklar kurmana da olanak tanır. Ortak hedefler ve ilgi alanları etrafında toplanan insanlarla kalıcı dostluklar kurabilirsin. Spor artık sosyal bir aktivite!",
+    stats: [
+      { number: "1K+", label: "Aktif Kullanıcı" },
+      { number: "%95", label: "Yeni Arkadaşlık" },
+      { number: "50+", label: "Haftalık Etkinlik" }
+    ],
+    image: "/images/why_fitbul3.png"
   },
   {
     icon: "🎉",
     title: "Eğlenceli & Sosyal Deneyim",
-    text: "Spor artık sıkıcı bir görev değil, keyifli sosyal bir aktivite olur.",
+    shortText: "Spor artık sıkıcı bir görev değil, keyifli sosyal bir aktivite olur.",
+    detailedText: "Tek başına spor yapmak monoton ve sıkıcı olabilir. Ancak doğru partnerlerle spor yapmak eğlenceli, sosyal ve motive edici bir deneyime dönüşür. Gülerek, konuşarak, birbirinizi motive ederek spordan keyif alın!",
+    stats: [
+      { number: "%96", label: "Memnuniyet" },
+      { number: "4.8★", label: "Uygulama Puanı" },
+      { number: "%88", label: "Tekrar Kullanım" }
+    ],
+    image: "/images/why_fitbul4.png"
   },
 ];
 
@@ -141,11 +174,6 @@ const faqItems = [
       "Koşu, yürüyüş, spor salonu, yoga, pilates, bisiklet, yüzme, hiking ve daha fazlası.",
   },
   {
-    question: "Challenge'lara katılmak zorunlu mu?",
-    answer:
-      "Hayır. Challenge'lar sadece ekstra motivasyon sağlar. İstersen sadece etkinliklere katılabilirsin.",
-  },
-  {
     question: "FitBul yeni başlayanlar için uygun mu?",
     answer:
       "Kesinlikle. Birçok kullanıcı spora yeni başlamak isteyen kişilerden oluşuyor. Seviye filtresi ile sana uygun partner bulursun.",
@@ -154,11 +182,6 @@ const faqItems = [
     question: "Mesajlaştığım kişiler telefon numaramı görebiliyor mu?",
     answer:
       "Hayır. Telefon gibi kişisel bilgiler gizlidir. Tüm iletişim uygulama içinde gerçekleşir.",
-  },
-  {
-    question: "Arkadaşımı davet edebilir miyim?",
-    answer:
-      "Evet. Uygulama içi davet sistemi ile arkadaşlarını kolayca FitBul'a çağırabilirsin.",
   },
   {
     question: "Verilerim ve ilerlemem nasıl takip ediliyor?",
@@ -181,6 +204,51 @@ function getInitials(name) {
 
 function App() {
   const [activeFaq, setActiveFaq] = useState(null);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [hasAnimated, setHasAnimated] = useState(false);
+  const [activeUsers, setActiveUsers] = useState(0);
+  const [completedEvents, setCompletedEvents] = useState(0);
+  const [sportBranches, setSportBranches] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+
+      // Check if about section is in view
+      const aboutSection = document.getElementById('about');
+      if (aboutSection && !hasAnimated) {
+        const rect = aboutSection.getBoundingClientRect();
+        const isInView = rect.top < window.innerHeight && rect.bottom >= 0;
+        
+        if (isInView) {
+          setHasAnimated(true);
+          animateCounter(setActiveUsers, 1000, 1500);
+          animateCounter(setCompletedEvents, 50, 1500);
+          animateCounter(setSportBranches, 30, 1500);
+        }
+      }
+    };
+
+    const animateCounter = (setter, target, duration) => {
+      const startTime = Date.now();
+      const step = () => {
+        const now = Date.now();
+        const progress = Math.min((now - startTime) / duration, 1);
+        const easeOutQuad = progress * (2 - progress);
+        setter(Math.floor(easeOutQuad * target));
+        
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        }
+      };
+      requestAnimationFrame(step);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    handleScroll(); // Check on mount
+    
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [hasAnimated]);
 
   const scrollToId = (id) => {
     const el = document.getElementById(id);
@@ -190,7 +258,7 @@ function App() {
   return (
     <div className="app">
       {/* NAVBAR */}
-      <header className="top-nav">
+      <header className={`top-nav ${isScrolled ? "scrolled" : ""}`}>
         <div className="container nav-inner">
           <a href="#hero" className="logo">
             <img src="/images/logo.png" alt="FitBul Logo" className="logo-image" />
@@ -223,7 +291,6 @@ function App() {
             <video autoPlay loop muted playsInline className="hero-video">
               <source src="/video/background_video.mp4" type="video/mp4" />
             </video>
-            <div className="hero-video-overlay" />
           </div>
 
           <div className="container hero-grid">
@@ -248,45 +315,7 @@ function App() {
                 >
                   Uygulamayı İndir
                 </button>
-                <button
-                  className="btn outline btn-lg"
-                  onClick={() => scrollToId("features")}
-                >
-                  Özellikleri Keşfet
-                </button>
               </div>
-              <div className="hero-meta">
-                <span>⚡ 2 dakikada profilini oluştur</span>
-                <span>🤝 Gerçek spor partnerleriyle eşleş</span>
-                <span>📍 Şehrine ve semtine göre filtrele</span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* HOW IT WORKS */}
-        <section id="how" className="section section-muted">
-          <div className="container">
-            <div className="section-header center">
-              <h2>Nasıl çalışır?</h2>
-              <p>
-                Uygulama, basit bir akışla seni doğru spor partneriyle
-                buluşturur.
-              </p>
-            </div>
-
-            <div className="how-card-grid">
-              {howSteps.map((step, index) => (
-                <div
-                  key={step.title}
-                  className="how-card"
-                  style={{ animationDelay: `${index * 0.15}s` }}
-                >
-                  <div className="how-card-number">{index + 1}</div>
-                  <h3>{step.title}</h3>
-                  <p>{step.text}</p>
-                </div>
-              ))}
             </div>
           </div>
         </section>
@@ -317,15 +346,15 @@ function App() {
                 </p>
                 <div className="about-stats">
                   <div className="stat-item">
-                    <div className="stat-number">10K+</div>
+                    <div className="stat-number counting">{activeUsers}+</div>
                     <div className="stat-label">Aktif Kullanıcı</div>
                   </div>
                   <div className="stat-item">
-                    <div className="stat-number">50K+</div>
+                    <div className="stat-number counting">{completedEvents}+</div>
                     <div className="stat-label">Tamamlanan Etkinlik</div>
                   </div>
                   <div className="stat-item">
-                    <div className="stat-number">30+</div>
+                    <div className="stat-number counting">{sportBranches}+</div>
                     <div className="stat-label">Spor Branşı</div>
                   </div>
                 </div>
@@ -374,33 +403,93 @@ function App() {
             <div className="section-header center">
               <h2>Neden FitBul?</h2>
               <p>
-                Çünkü “sonra bakarım” deyip ertelenen spor planlarını gerçek
+                Çünkü "sonra bakarım" deyip ertelenen spor planlarını gerçek
                 buluşmalara dönüştürmek için tasarlandı.
               </p>
             </div>
 
             <div className="why-new-grid">
-              <div className="why-illustration">
-                <img
-                  src="/images/images.png"
-                  alt="Neden FitBul?"
-                  className="why-illustration-img"
-                />
-              </div>
-
-              <div className="why-card-grid">
+              <div className="why-bg-element why-bg-element-1" />
+              <div className="why-bg-element why-bg-element-2" />
+              <div className="why-bg-element why-bg-element-3" />
+              
+              <div className="why-creative-wrapper">
                 {whyCards.map((item, index) => (
                   <div
                     key={item.title}
                     className="why-card"
                     style={{ animationDelay: `${index * 0.1}s` }}
                   >
-                    <div className="why-card-icon">{item.icon}</div>
-                    <h3>{item.title}</h3>
-                    <p>{item.text}</p>
+                    <div className="why-card-inner">
+                      {/* Front Side */}
+                      <div className="why-card-front">
+                        <img 
+                          src={item.image} 
+                          alt={item.title}
+                          className="why-card-front-image"
+                        />
+                        <div className="why-card-front-content">
+                          <h3>{item.title}</h3>
+                          <p>{item.shortText}</p>
+                        </div>
+                      </div>
+                      
+                      {/* Back Side */}
+                      <div className="why-card-back">
+                        <div className="why-card-back-icon">{item.icon}</div>
+                        <div className="why-card-back-content">
+                          <h3>{item.title}</h3>
+                          <p>{item.detailedText}</p>
+                          <div className="why-card-back-stats">
+                            {item.stats.map((stat, idx) => (
+                              <div key={idx} className="why-stat-item">
+                                <div className="why-stat-number">{stat.number}</div>
+                                <div className="why-stat-label">{stat.label}</div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 ))}
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* NASIL ÇALIŞIR - Altında */}
+        <section id="how" className="section">
+          <div className="container">
+            <div className="section-header center">
+              <h2>Nasıl çalışır?</h2>
+              <p>
+                Uygulama, basit bir akışla seni doğru spor partneriyle
+                buluşturur.
+              </p>
+            </div>
+
+            <div className="how-card-grid">
+              {howSteps.map((step, index) => (
+                <div
+                  key={step.title}
+                  className="how-card"
+                  style={{ animationDelay: `${index * 0.15}s` }}
+                >
+                  <img 
+                    src={step.image} 
+                    alt={step.title}
+                    className="how-card-image"
+                  />
+                  <div className="how-card-overlay">
+                    <div className="how-card-icon">{step.icon}</div>
+                    <div className="how-card-text">
+                      <h3>{step.title}</h3>
+                      <p>{step.text}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </section>
@@ -449,12 +538,12 @@ function App() {
         {/* FAQ */}
         <section id="faq" className="section section-muted">
           <div className="container">
-            <div className="section-header center">
+            <div className="faq-section-header">
               <h2>Sıkça Sorulan Sorular</h2>
               <p>Merak ettiklerinin cevaplarını burada bulabilirsin.</p>
             </div>
 
-            {/* 2 sütun, 5 satır = 10 soru */}
+            {/* 2 sütun grid */}
             <div className="faq-grid">
               {faqItems.map((item, idx) => {
                 const isOpen = activeFaq === idx;
@@ -559,51 +648,96 @@ function App() {
             </div>
           </div>
         </section>
+
+        {/* NEWSLETTER */}
+        <section className="newsletter-section">
+          <div className="newsletter-wrapper">
+            <div className="newsletter-inner">
+              <div className="newsletter-left">
+                <div className="newsletter-icon">📧</div>
+                <div className="newsletter-content">
+                  <h2>Abone Olun ve Yeniliklerden Haberdar Olun</h2>
+                </div>
+              </div>
+
+              <div className="newsletter-right">
+                <form
+                  className="newsletter-form"
+                  onSubmit={(e) => e.preventDefault()}
+                >
+                  <input
+                    type="email"
+                    placeholder="E-posta adresinizi girin"
+                    className="newsletter-input"
+                    required
+                  />
+                  <button type="submit" className="newsletter-button">
+                    Abone Ol
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </section>
+
       </main>
 
       {/* FOOTER */}
       <footer className="footer">
-        <div className="container footer-inner">
-          <div className="footer-left">
-            <a href="#hero" className="logo">
-              <img
-                src="/images/logo.png"
-                alt="FitBul Logo"
-                className="logo-image"
-              />
-              <span className="logo-text">{APP_NAME}</span>
-            </a>
-            <p className="footer-text">
-              {APP_NAME}, sporla sosyalleşmek isteyenleri bir araya getiren
-              yeşil ve enerjik bir topluluk.
-            </p>
-          </div>
-          <div className="footer-columns">
-            <div>
+        <div className="container">
+          <div className="footer-inner">
+            <div className="footer-left">
+              <a href="#hero" className="logo">
+                <img
+                  src="/images/logo.png"
+                  alt="FitBul Logo"
+                  className="logo-image"
+                />
+                <span className="logo-text">{APP_NAME}</span>
+              </a>
+              <p className="footer-text">
+                {APP_NAME}, sporla sosyalleşmek isteyenleri bir araya getiren
+                yeşil ve enerjik bir topluluk.
+              </p>
+              <div className="footer-social">
+                <a href="#" className="footer-social-link">📘</a>
+                <a href="#" className="footer-social-link">📷</a>
+                <a href="#" className="footer-social-link">🐦</a>
+                <a href="#" className="footer-social-link">▶️</a>
+              </div>
+            </div>
+            
+            <div className="footer-column">
               <h4>Ürün</h4>
               <a href="#about">Hakkımızda</a>
               <a href="#features">Hizmetlerimiz</a>
               <a href="#why">Neden FitBul?</a>
+              <a href="#how">Nasıl Çalışır?</a>
             </div>
-            <div>
+            
+            <div className="footer-column">
               <h4>Topluluk</h4>
               <a href="#testimonials">Kullanıcılar</a>
               <a href="#faq">SSS</a>
+              <a href="#download">Uygulamayı İndir</a>
             </div>
-            <div>
+            
+            <div className="footer-column">
               <h4>İletişim</h4>
               <p>hello@fitbul.app</p>
-              <p>Instagram / TikTok: @FitBul</p>
+              <p>Instagram: @FitBul</p>
+              <p>TikTok: @FitBul</p>
             </div>
           </div>
-        </div>
-        <div className="footer-bottom">
-          <div className="container footer-bottom-inner">
-            <span>© {new Date().getFullYear()} {APP_NAME}</span>
-            <div className="footer-links">
-              <a href="#hero">Kullanım Şartları</a>
-              <a href="#hero">Gizlilik</a>
-              <a href="#download">Uygulamayı İndir</a>
+          
+          <div className="footer-bottom">
+            <div className="footer-bottom-inner">
+              <span>© {new Date().getFullYear()} {APP_NAME}. Tüm hakları saklıdır.</span>
+              <div className="footer-links">
+                <a href="#hero">Kullanım Şartları</a>
+                <a href="#hero">Gizlilik Politikası</a>
+                <a href="#hero">Çerez Politikası</a>
+              </div>
             </div>
           </div>
         </div>
